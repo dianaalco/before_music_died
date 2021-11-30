@@ -1,0 +1,36 @@
+<div class="container">
+	<div class="row">
+		<div class="col-xl-4 col-lg-6">
+			<%= render partial: "users/user_details", locals: { user: @user } %></div>
+	 <div class="col-xl-4 col-lg-6"> <%= render partial: "users/user_address", locals: {user: @user} %></div>
+	 <div class="col-xl-4 col-lg-6"> <%= render partial: "users/user_geolocation", locals: { user: @user } %></div>
+	 <div class="col-xl-4 col-lg-6"> <%= render partial: "users/user_contact", locals: {user: @user} %>
+  </div>
+</div>
+<p>
+<%= image_tag "https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=400x300&center=#{@user['address']['geo']['lat']},#{@user['address']['geo']['lng']}&key=FAKE_API_KEY", alt: "Map" %>
+</p>
+</div>
+
+<div class="container mt-4">
+  <div class="row mt-3">
+	  <% @user_albums.each do |album| %>
+	    <div class="col-md" id="album_id" name="album_id" value="<%= album['id']%>">
+		<a href="/albums/<%=album['id']%>">
+	  <image src="<%= photos_for_album(album['id']) %>"><p><%= album['title'] %></p></image>
+    </div>
+ <% end %>
+ <div id="pagination">
+  <div class="nav">
+  	<ul>
+    <%= will_paginate(@user_albums, params: { controller: :users,
+                                        action: :show },
+                               param_name: "users[page]",
+                               previous_label: 'Previous',
+                               next_label: 'Next') %>
+    </ul>
+  </div>
+</div>
+</div>
+
+</div>
